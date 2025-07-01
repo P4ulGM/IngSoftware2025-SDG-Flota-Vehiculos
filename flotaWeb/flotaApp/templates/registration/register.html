@@ -1,0 +1,35 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<!-- REGISTRO -->
+
+<h3>REGISTRO DE USUARIO</h3>
+
+<br>
+
+<section class="seccion bg-gray min-vh-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+        <form id="register-form" action="" method="post">
+            {% csrf_token %}
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title text-center">Complete todos los campos</h5>
+                {{ form|crispy }}
+                <div class="d-flex justify-content-between mt-3">
+                  <a href="{% url 'home' %}" class="card-link">Inicio</a>
+                  <a href="{% url 'login' %}" class="card-link">Iniciar sesión</a>
+                </div>
+                <button class="btn btn-sm btn-primary float-end mt-3" type="submit">Registrarse</button>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
