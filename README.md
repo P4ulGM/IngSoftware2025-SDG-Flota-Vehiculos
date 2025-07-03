@@ -1,5 +1,7 @@
 TENER INSTALADO:
 
+pip install django
+
 pip3 install --user django-crispy-forms
 
 pip install crispy-bootstrap5
