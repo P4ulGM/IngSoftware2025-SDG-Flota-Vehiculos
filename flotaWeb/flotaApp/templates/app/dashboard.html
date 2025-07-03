@@ -1,0 +1,54 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="seccion bg-gray min-vh-100">
+    <section class="py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Vehículos</h5>
+                            <p class="display-5">{{ vehiculos_count }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-3">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Conductores</h5>
+                            <p class="display-5">{{ conductores_count }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <canvas id="rutasChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('rutasChart').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Pendientes', 'En curso', 'Completadas'],
+        datasets: [{
+            label: 'Rutas',
+            data: [{{ pendientes }}, {{ en_curso }}, {{ completadas }}],
+            backgroundColor: ['#ffc107', '#17a2b8', '#28a745']
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+</script>
+{% endblock %}
