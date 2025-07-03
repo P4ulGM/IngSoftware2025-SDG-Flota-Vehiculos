@@ -20,8 +20,4 @@ PENDIENTE:
 
 - para inicio: front de posible dashboard interactivo
 
-- para mantenciones: listar todas las mantenciones
-
-- para emitir reporte: TODO
-
 - para notificaciones: TODO
