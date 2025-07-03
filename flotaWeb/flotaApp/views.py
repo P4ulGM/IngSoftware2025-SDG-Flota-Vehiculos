@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, AsignarRutaForm, RegistrarMantencionForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from .models import Ruta
 
 # Create your views here.
 def home(request):
@@ -47,7 +48,11 @@ def asignar_ruta(request):
     return render(request, 'app/asignar_ruta.html', context)
 
 def ver_ruta(request):
-    return render(request, 'app/ver_ruta.html')
+    rutas = Ruta.objects.all().order_by('-fecha_asignacion')
+    context = {
+        'rutas': rutas
+    }
+    return render(request, 'app/ver_ruta.html', context)
 
 def emitir_reporte(request):
     return render(request, 'app/emitir_reporte.html')
