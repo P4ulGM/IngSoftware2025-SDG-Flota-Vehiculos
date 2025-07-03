@@ -313,3 +313,21 @@ def hacer_mantencion(request):
         'form': form
     }
     return render(request, 'app/hacer_mantencion.html', context)
+
+
+def dashboard(request):
+    """Vista simple para mostrar un dashboard con conteos básicos."""
+    vehiculos_count = Vehiculo.objects.count()
+    conductores_count = Conductor.objects.count()
+    pendientes = Ruta.objects.filter(estado='PENDIENTE').count()
+    en_curso = Ruta.objects.filter(estado='EN_CURSO').count()
+    completadas = Ruta.objects.filter(estado='COMPLETADA').count()
+
+    context = {
+        'vehiculos_count': vehiculos_count,
+        'conductores_count': conductores_count,
+        'pendientes': pendientes,
+        'en_curso': en_curso,
+        'completadas': completadas,
+    }
+    return render(request, 'app/dashboard.html', context)

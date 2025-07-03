@@ -20,6 +20,4 @@ cuenta jefe: Mati jefeterreno10
 
 PENDIENTE:
 
-- para inicio: front de posible dashboard interactivo
-
 - para notificaciones: TODO

@@ -28,6 +28,11 @@
                   <a class="nav-link" href="{% url 'nosotros' %}">Quienes somos</a>
                 </li>
                 {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
                     {% if request.user.logistico %}
                       <!-- LOGISTICO -->
                       <li class="nav-item">
