@@ -4,6 +4,8 @@ pip3 install --user django-crispy-forms
 
 pip install crispy-bootstrap5
 
+pip install reportlab
+
 CUENTAS ACTORES EN INICIAR SESION:
 
 cuenta administrador: <*Crearse uno comando del superuser*<
