@@ -176,3 +176,79 @@ class Ruta(models.Model):
         verbose_name = "Ruta"
         verbose_name_plural = "Rutas"
         ordering = ['-fecha_asignacion']
+
+
+class Mantencion(models.Model):
+    TIPO_CHOICES = [
+        ('PREVENTIVO', 'Mantenimiento Preventivo'),
+        ('CORRECTIVO', 'Mantenimiento Correctivo'),
+        ('REVISION_TECNICA', 'Revisión Técnica'),
+        ('CAMBIO_ACEITE', 'Cambio de Aceite'),
+        ('CAMBIO_NEUMATICOS', 'Cambio de Neumáticos'),
+        ('CAMBIO_FRENOS', 'Cambio de Frenos'),
+        ('REPARACION_MOTOR', 'Reparación de Motor'),
+        ('REPARACION_TRANSMISION', 'Reparación de Transmisión'),
+        ('OTROS', 'Otros'),
+    ]
+    
+    ESTADO_CHOICES = [
+        ('PROGRAMADO', 'Programado'),
+        ('EN_PROCESO', 'En Proceso'),
+        ('COMPLETADO', 'Completado'),
+        ('CANCELADO', 'Cancelado'),
+    ]
+    
+    vehiculo = models.ForeignKey(
+        Vehiculo,
+        on_delete=models.CASCADE,
+        verbose_name="Vehículo"
+    )
+    conductor = models.ForeignKey(
+        Conductor,
+        on_delete=models.CASCADE,
+        verbose_name="Conductor Responsable"
+    )
+    fecha_hora = models.DateTimeField(
+        verbose_name="Fecha y Hora"
+    )
+    tipo_mantenimiento = models.CharField(
+        max_length=25,
+        choices=TIPO_CHOICES,
+        verbose_name="Tipo de Mantenimiento"
+    )
+    taller = models.CharField(
+        max_length=255,
+        verbose_name="Taller"
+    )
+    costo = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="Costo (CLP)"
+    )
+    descripcion = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Descripción Detallada"
+    )
+    estado = models.CharField(
+        max_length=15,
+        choices=ESTADO_CHOICES,
+        default='PROGRAMADO',
+        verbose_name="Estado"
+    )
+    fecha_registro = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Fecha de Registro"
+    )
+    fecha_actualizacion = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Última Actualización"
+    )
+    
+    def __str__(self):
+        return f"{self.get_tipo_mantenimiento_display()} - {self.vehiculo.patente} ({self.fecha_hora.strftime('%d/%m/%Y')})"
+    
+    class Meta:
+        verbose_name = "Mantención"
+        verbose_name_plural = "Mantenciones"
+        ordering = ['-fecha_hora']

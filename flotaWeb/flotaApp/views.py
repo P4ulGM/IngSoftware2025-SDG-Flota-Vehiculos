@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, AsignarRutaForm
+from .forms import CustomUserCreationForm, AsignarRutaForm, RegistrarMantencionForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
@@ -53,4 +53,18 @@ def emitir_reporte(request):
     return render(request, 'app/emitir_reporte.html')
 
 def hacer_mantencion(request):
-    return render(request, 'app/hacer_mantencion.html')
+    if request.method == 'POST':
+        form = RegistrarMantencionForm(request.POST)
+        if form.is_valid():
+            mantencion = form.save()
+            messages.success(request, f'Mantención registrada exitosamente para el vehículo {mantencion.vehiculo.patente}')
+            return redirect('hacer_mantencion')
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        form = RegistrarMantencionForm()
+    
+    context = {
+        'form': form
+    }
+    return render(request, 'app/hacer_mantencion.html', context)
