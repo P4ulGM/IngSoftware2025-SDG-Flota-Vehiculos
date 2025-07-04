@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Logistico, Supervisor, Jefe, Vehiculo, Conductor, Ruta, Mantencion
+from .models import Logistico, Supervisor, Jefe, Vehiculo, Conductor, Ruta, Mantencion, Notificacion
 
 # Register your models here.
 admin.site.register(Logistico)
@@ -7,6 +7,7 @@ admin.site.register(Supervisor)
 admin.site.register(Jefe)
 admin.site.register(Vehiculo)
 admin.site.register(Conductor)
+admin.site.register(Notificacion)
 
 @admin.register(Ruta)
 class RutaAdmin(admin.ModelAdmin):

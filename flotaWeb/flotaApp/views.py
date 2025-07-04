@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, AsignarRutaForm, RegistrarMantencionForm, GenerarReporteForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .models import Ruta, Vehiculo, Conductor, Mantencion
+from .models import Ruta, Vehiculo, Conductor, Mantencion, Supervisor, Notificacion
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from datetime import datetime, timedelta
 from django.utils import timezone
@@ -38,6 +39,11 @@ def asignar_ruta(request):
         form = AsignarRutaForm(request.POST)
         if form.is_valid():
             ruta = form.save()
+            for supervisor in Supervisor.objects.all():
+                Notificacion.objects.create(
+                    usuario=supervisor.user,
+                    mensaje=f"Nueva ruta asignada a {ruta.conductor.nombre} {ruta.conductor.apellido}"
+                )
             messages.success(request, f'Ruta asignada exitosamente: {ruta.origen} → {ruta.destino}')
             return redirect('asignar_ruta')
         else:
@@ -315,6 +321,20 @@ def hacer_mantencion(request):
     return render(request, 'app/hacer_mantencion.html', context)
 
 
+def notificaciones(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.method == 'POST':
+        notif_id = request.POST.get('marcar_leida')
+        if notif_id:
+            Notificacion.objects.filter(id=notif_id, usuario=request.user).update(leido=True)
+            return redirect('notificaciones')
+
+    notifs = Notificacion.objects.filter(usuario=request.user).order_by('-fecha')
+    return render(request, 'app/notificaciones.html', {'notificaciones': notifs})
+
+
 def dashboard(request):
     """Vista simple para mostrar un dashboard con conteos básicos."""
     vehiculos_count = Vehiculo.objects.count()
@@ -323,11 +343,21 @@ def dashboard(request):
     en_curso = Ruta.objects.filter(estado='EN_CURSO').count()
     completadas = Ruta.objects.filter(estado='COMPLETADA').count()
 
+    vehiculos_disponibles = Vehiculo.objects.filter(estado='DISPONIBLE').count()
+    vehiculos_no_disponibles = Vehiculo.objects.filter(estado='NO_DISPONIBLE').count()
+
+    ultimas_rutas = Ruta.objects.all().order_by('-fecha_asignacion')[:5]
+    ultimas_mantenciones = Mantencion.objects.all().order_by('-fecha_hora')[:5]
+
     context = {
         'vehiculos_count': vehiculos_count,
         'conductores_count': conductores_count,
         'pendientes': pendientes,
         'en_curso': en_curso,
         'completadas': completadas,
+        'vehiculos_disponibles': vehiculos_disponibles,
+        'vehiculos_no_disponibles': vehiculos_no_disponibles,
+        'ultimas_rutas': ultimas_rutas,
+        'ultimas_mantenciones': ultimas_mantenciones,
     }
     return render(request, 'app/dashboard.html', context)
