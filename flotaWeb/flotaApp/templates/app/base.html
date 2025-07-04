@@ -29,6 +29,11 @@
                 </li>
                 {% if request.user.is_authenticated %}
                 <li class="nav-item">
+                  <a class="nav-link" href="{% url 'notificaciones' %}">Notificaciones{% if notificaciones_no_leidas %} <span class="badge bg-danger">{{ notificaciones_no_leidas }}</span>{% endif %}</a>
+                </li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
                   <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
                 </li>
                 {% endif %}
