@@ -10,7 +10,7 @@ pip install reportlab
 
 CUENTAS ACTORES EN INICIAR SESION:
 
-cuenta administrador: <*Crearse uno comando del superuser*<
+cuenta administrador: *Crearse uno comando del superuser*
 
 cuenta logistico: Edd logistico10
 
@@ -18,6 +18,4 @@ cuenta supervisor: Gabi supervisor10
 
 cuenta jefe: Mati jefeterreno10
 
-PENDIENTE:
 
-- para notificaciones: TODO
